@@ -15,3 +15,13 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands'
+
+import { createJiraTicket } from "../support/jira";
+
+Cypress.on("fail", (error, runnable) => {
+  cy.task("createJiraTicket", {
+    testName: runnable.fullTitle(),
+    error: error.message,
+  });
+  throw error; // important: still fail the test
+});
